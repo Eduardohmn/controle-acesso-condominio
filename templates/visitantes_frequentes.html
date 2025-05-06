@@ -1,0 +1,41 @@
+<h2>Visitantes Frequentes</h2>
+
+<form method="POST" class="row g-3 mb-4">
+    <div class="col-md-4">
+        <input type="text" name="placa" placeholder="Placa" class="form-control" required>
+    </div>
+    <div class="col-md-6">
+        <input type="text" name="descricao" placeholder="Descrição (Correio, Uber Eats...)" class="form-control" required>
+    </div>
+    <div class="col-md-2">
+        <button type="submit" class="btn btn-success w-100">Adicionar</button>
+    </div>
+</form>
+
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Placa</th>
+            <th>Descrição</th>
+            <th>Ação</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in lista %}
+        <tr>
+            <td>{{ item.placa }}</td>
+            <td>{{ item.descricao }}</td>
+            <td>
+                <form action="/remover_visitante_frequente/{{ item.id }}" method="post" style="display:inline;">
+                    <button class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja remover?')">🗑 Remover</button>
+                </form>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<a href="/apagar_ocasionais" class="btn btn-danger mt-3" onclick="return confirm('Tem certeza que deseja apagar todos os registros de visitantes ocasionais?')">
+    🧹 Apagar Registros de Ocasionais
+</a>
+<a href="/" class="btn btn-secondary mt-3">⬅ Voltar</a>

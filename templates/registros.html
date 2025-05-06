@@ -10,12 +10,42 @@
 
     <a href="/" class="btn btn-secondary mb-3">⬅ Voltar</a>
 
+    <!-- Formulário de Filtro -->
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-md-3">
+            <label class="form-label">Placa</label>
+            <input type="text" name="placa" value="{{ request.args.get('placa', '') }}" class="form-control" placeholder="ABC1234">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Tipo</label>
+            <select name="tipo" class="form-select">
+                <option value="">Todos</option>
+                <option value="entrada" {% if request.args.get('tipo') == 'entrada' %}selected{% endif %}>Entrada</option>
+                <option value="saida" {% if request.args.get('tipo') == 'saida' %}selected{% endif %}>Saída</option>
+            </select>
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Data início</label>
+            <input type="date" name="data_inicio" value="{{ request.args.get('data_inicio', '') }}" class="form-control">
+        </div>
+        <div class="col-md-3">
+            <label class="form-label">Data fim</label>
+            <input type="date" name="data_fim" value="{{ request.args.get('data_fim', '') }}" class="form-control">
+        </div>
+        <div class="col-12 mt-2">
+            <button type="submit" class="btn btn-primary">🔍 Filtrar</button>
+            <a href="/registros" class="btn btn-secondary">Limpar</a>
+        </div>
+    </form>
+
+    <!-- Tabela de Registros -->
     <table class="table table-bordered">
         <thead class="table-dark">
             <tr>
                 <th>Placa</th>
                 <th>Tipo</th>
                 <th>Data/Hora</th>
+                <th>Status</th>
                 <th>Foto do RG</th>
             </tr>
         </thead>
@@ -26,6 +56,13 @@
                 <td>{{ reg.tipo }}</td>
                 <td>{{ reg.data_hora.strftime('%d/%m/%Y %H:%M:%S') }}</td>
                 <td>
+                    {% if reg.placa in frequentes %}
+                        <span class="text-success">Frequente ({{ frequentes[reg.placa] }})</span>
+                    {% else %}
+                        <span class="text-warning">Ocasional</span>
+                    {% endif %}
+                </td>
+                <td>
                     {% if reg.imagem_rg %}
                         <img src="{{ url_for('static', filename=reg.imagem_rg.split('static/')[1]) }}" width="180">
                     {% else %}
@@ -35,6 +72,7 @@
             </tr>
             {% endfor %}
         </tbody>
+        
     </table>
 </body>
 </html>

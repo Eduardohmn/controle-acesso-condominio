@@ -24,6 +24,14 @@ class Registro(Base):
     tipo = Column(String, nullable=False)  # entrada ou saída
     imagem_rg = Column(String)  # Caminho do arquivo de RG do visitante
 
+class VisitanteFrequente(Base):
+    __tablename__ = 'visitantes_frequentes'
+    
+    id = Column(Integer, primary_key=True)
+    placa = Column(String, unique=True, nullable=False)
+    descricao = Column(String)  # Ex: "Correios", "Entregador fixo", etc.
+
+
 # Conexão com o banco SQLite
 engine = create_engine('sqlite:///condominio.db')
 Base.metadata.create_all(engine)
