@@ -1,15 +1,10 @@
 import cv2
 import easyocr
 import re
+import cv2
 
 reader = easyocr.Reader(['pt', 'en'])
 
-def capturar_imagem():
-    cap = cv2.VideoCapture(0)
-    ret, frame = cap.read()
-    if ret:
-        cv2.imwrite('static/captures/captura.jpg', frame)
-    cap.release()
 
 def detectar_placa(path_imagem):
     resultados = reader.readtext(path_imagem)
