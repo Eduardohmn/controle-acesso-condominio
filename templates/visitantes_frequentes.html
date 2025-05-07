@@ -49,7 +49,8 @@
     </form>
 
     <!-- Tabela -->
-    <table class="table table-bordered">
+    <table class="table table-bordered table-striped rounded-2 overflow-hidden">
+
         <thead class="table-dark">
             <tr>
                 <th>Placa</th>
@@ -64,7 +65,7 @@
                 <td>{{ item.descricao }}</td>
                 <td>
                     <form action="/remover_visitante_frequente/{{ item.id }}" method="post" style="display:inline;">
-                        <button class="btn btn-sm btn-danger" onclick="return confirm('Tem certeza que deseja remover?')">🗑 Remover</button>
+                        <button class="btn btn-sm btn-soft-danger" onclick="return confirm('Tem certeza que deseja remover?')">🗑 Remover</button>
                     </form>
                 </td>
             </tr>

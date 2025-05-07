@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
     <meta charset="UTF-8">
     <title>Controle de Entrada e Saída</title>
@@ -11,32 +12,49 @@
     <!-- Tema escuro -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dark_theme.css') }}">
 </head>
+
 <body class="text-center">
 
     <div class="container py-4">
         <h1>Controle de Entrada e Saída</h1>
 
         {% if placas %}
-            <div class="alert alert-success mt-3">
-                <strong>Placas detectadas:</strong> {{ placas|join(', ') }}
-            </div>
+        <div class="alert alert-success mt-3">
+            <strong>Placas detectadas:</strong> {{ placas|join(', ') }}
+        </div>
         {% endif %}
 
         <!-- Câmera ao vivo -->
         <div class="my-4">
-            <img src="{{ url_for('video_feed') }}" alt="Câmera ao Vivo" class="camera-preview" style="max-width: 720px; width: 100%; border-radius: 12px; box-shadow: 0 0 15px rgba(255,255,255,0.1);">
+            <img src="{{ url_for('video_feed') }}" alt="Câmera ao Vivo" class="camera-preview"
+                style="max-width: 720px; width: 100%; border-radius: 12px; box-shadow: 0 0 15px rgba(255,255,255,0.1);">
         </div>
 
-        <!-- Botões -->
-        <div class="d-flex flex-wrap justify-content-center">
-            <form action="/capturar" method="post" class="me-2">
-                <button class="btn btn-success">📸 Capturar Placa</button>
+        <!-- Botões de ação -->
+        <div class="d-flex justify-content-center flex-wrap gap-3 mt-4">
+
+            <form action="/capturar" method="post">
+                <button class="btn btn-success d-flex align-items-center gap-2">
+                    📸 <span>Capturar Placa</span>
+                </button>
             </form>
-            <a href="/registros" class="btn btn-success">📄 Ver Registros</a>
-            <a href="/visitantes_frequentes" class="btn btn-success">Prestadores de serviço/familiar</a>
-            <a href="/cadastrar" class="btn btn-success">👤 Cadastrar Morador</a>
+
+            <a href="/registros" class="btn btn-success d-flex align-items-center gap-2">
+                📄 <span>Ver Registros</span>
+            </a>
+
+            <a href="/visitantes_frequentes" class="btn btn-success d-flex align-items-center gap-2">
+                🚚 <span>Prestadores de serviço/familiar</span>
+            </a>
+
+            <a href="/cadastrar" class="btn btn-success d-flex align-items-center gap-2">
+                🧍‍♂️ <span>Cadastrar Morador</span>
+            </a>
+
         </div>
+
     </div>
 
 </body>
+
 </html>
