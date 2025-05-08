@@ -8,20 +8,11 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dark_theme.css') }}">
-    <style>
-        .btn-soft-danger {
-            background-color: #773636;
-            color: #fff;
-            border: none;
-        }
-        .btn-soft-danger:hover {
-            background-color: #a94444;
-        }
-    </style>
+
 </head>
 <body class="container mt-5">
 
-    <h2 class="mb-4 d-flex align-items-center gap-2">
+    <h2 class="mb-4">
         <span>🚚</span> Visitantes Frequentes
     </h2>
 
@@ -49,7 +40,7 @@
     </form>
 
     <!-- Tabela -->
-    <table class="table table-bordered table-striped rounded-2 overflow-hidden">
+    <table class="table table-dark table-bordered mt-2">
 
         <thead class="table-dark">
             <tr>

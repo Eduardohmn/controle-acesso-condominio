@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gerenciar Moradores</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dark_theme.css') }}">
+
+</head>
+
+<body class="container mt-5">
+    <h1 class="mb-4">Gerenciar Moradores</h1>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+        {% for category, message in messages %}
+            <div class="alert alert-{{ category }} mt-3">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+    {% endwith %}
+
+    <input type="text" id="searchInput" class="form-control" placeholder="Buscar registros">
+
+    <table class="table table-dark table-bordered mt-2" id="moradores-table">
+        <thead  class="table-dark">
+            <tr>
+                <th>Nome</th>
+                <th>Endereço</th>
+                <th>Telefone</th>
+                <th>Placas</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for morador in moradores %}
+            <tr data-id="{{ morador.id }}">
+                <td><span class="editable-text">{{ morador.nome }}</span></td>
+                <td><span class="editable-text">{{ morador.endereco }}</span></td>
+                <td><span class="editable-text">{{ morador.telefone }}</span></td>
+                <td>
+                    {% for carro in morador.carros %}
+                        <span class="editable-placa">{{ carro.placa }}</span>
+                    {% endfor %}
+                </td>
+                <td class="d-flex gap-2">
+                    <button class="btn btn-warning btn-sm" onclick="editarMorador(this)">✏️ Editar</button>
+                    <form action="/remover_morador/{{ morador.id }}" method="POST" onsubmit="return confirm('Tem certeza que deseja remover este morador?');">
+                        <button class="btn btn-soft-danger btn-sm">🗑️ Remover</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="/" class="btn btn-secondary">Voltar</a>
+
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.min.js"></script>
+    <script>
+        document.getElementById('searchInput').addEventListener('keyup', function () {
+            const filter = this.value.toLowerCase();
+            const rows = document.querySelectorAll('#moradores-table tbody tr');
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(filter) ? '' : 'none';
+            });
+        });
+
+        function editarMorador(btn) {
+            let row = btn.closest('tr');
+            let spans = row.querySelectorAll('.editable-text, .editable-placa');
+
+            if (btn.textContent.includes('Editar')) {
+                spans.forEach(span => {
+                    const input = document.createElement('input');
+                    input.type = 'text';
+                    input.className = 'form-control form-control-sm';
+                    input.value = span.textContent;
+                    span.replaceWith(input);
+                });
+
+                btn.textContent = '💾 Salvar';
+                btn.classList.remove('btn-warning');
+                btn.classList.add('btn-success');
+            } else {
+                const id = row.getAttribute('data-id');
+                const inputs = row.querySelectorAll('input');
+                const [nome, endereco, telefone, ...placas] = Array.from(inputs).map(i => i.value);
+
+                fetch(`/editar_morador/${id}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ nome, endereco, telefone })
+                }).then(r => {
+                    if (r.ok) {
+                        inputs.forEach(input => {
+                            const span = document.createElement('span');
+                            span.className = input.parentElement.classList.contains('editable-placa') ? 'editable-placa' : 'editable-text';
+                            span.textContent = input.value;
+                            input.replaceWith(span);
+                        });
+                        btn.textContent = '✏️ Editar';
+                        btn.classList.remove('btn-success');
+                        btn.classList.add('btn-warning');
+                    }
+                });
+            }
+        }
+    </script>
+</body>
+
+</html>

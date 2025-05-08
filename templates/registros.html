@@ -16,7 +16,7 @@
 <body class="container mt-5">
     <h1 class="mb-4">Registros de Visitantes</h1>
 
-    <a href="/" class="btn btn-secondary mb-3">⬅ Voltar</a>
+    <a href="/" class="btn btn-secondary mb-3">Voltar</a>
 
     <!-- Formulário de Filtro -->
     <form method="get" class="row g-3 mb-4">
@@ -49,7 +49,7 @@
     </form>
 
     <!-- Tabela de Registros -->
-    <table class="table table-bordered table-striped rounded-2 overflow-hidden">
+    <table class="table table-dark table-bordered mt-2">
 
         <thead class="table-dark">
             <tr>
@@ -75,11 +75,12 @@
                 </td>
                 <td>
                     {% if reg.imagem_rg %}
-                    <img src="{{ url_for('static', filename=reg.imagem_rg.split('static/')[1]) }}" width="180">
+                        <img src="{{ url_for('static', filename=reg.imagem_rg) }}" width="180">
                     {% else %}
-                    <span class="text-muted">Sem imagem</span>
+                        <span class="text-muted">Sem imagem</span>
                     {% endif %}
                 </td>
+                
             </tr>
             {% endfor %}
         </tbody>
