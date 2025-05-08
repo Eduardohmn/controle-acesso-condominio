@@ -120,11 +120,18 @@ def cadastrar_morador():
         # Cria o morador
         novo = Morador(nome=nome, endereco=endereco, telefone=telefone)
         session.add(novo)
-        session.flush()  # para obter o novo.id
+        session.flush()  # para obter o novo.id antes do commit
 
-        # Adiciona os carros
+        # Verificação de placas duplicadas
         for placa in placas:
             placa_formatada = placa.upper().replace(" ", "").replace("-", "")
+            placa_existente = session.query(Carro).filter_by(placa=placa_formatada).first()
+            if placa_existente:
+                flash(f"A placa {placa_formatada} já está cadastrada para outro morador!", "danger")
+                session.rollback()
+                session.close()
+                return redirect(url_for('cadastrar_morador'))
+
             carro = Carro(placa=placa_formatada, morador_id=novo.id)
             session.add(carro)
 
